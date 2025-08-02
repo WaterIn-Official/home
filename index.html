@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WaterIn Studio</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="icon.ico">
     <style>
         @font-face {
             font-family: 'Paperlogy-8ExtraBold';
@@ -29,12 +31,10 @@
             color: white;
         }
 
+        /* 파도 이모지 배경 */
         .emoji-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             pointer-events: none;
             z-index: 1;
         }
@@ -47,42 +47,63 @@
             bottom: -100px;
         }
 
-        .floating-emoji:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
-        .floating-emoji:nth-child(2) { left: 15%; animation-duration: 18s; animation-delay: 2s; }
-        .floating-emoji:nth-child(3) { left: 25%; animation-duration: 12s; animation-delay: 4s; }
-        .floating-emoji:nth-child(4) { left: 35%; animation-duration: 20s; animation-delay: 1s; }
-        .floating-emoji:nth-child(5) { left: 45%; animation-duration: 16s; animation-delay: 3s; }
-        .floating-emoji:nth-child(6) { left: 55%; animation-duration: 14s; animation-delay: 5s; }
-        .floating-emoji:nth-child(7) { left: 65%; animation-duration: 17s; animation-delay: 2.5s; }
-        .floating-emoji:nth-child(8) { left: 75%; animation-duration: 19s; animation-delay: 4.5s; }
-        .floating-emoji:nth-child(9) { left: 85%; animation-duration: 13s; animation-delay: 1.5s; }
-        .floating-emoji:nth-child(10) { left: 95%; animation-duration: 21s; animation-delay: 3.5s; }
+        .floating-emoji:nth-child(1) { left: 5%; animation: float 15s linear infinite 0s; }
+        .floating-emoji:nth-child(2) { left: 15%; animation: float 18s linear infinite 2s; }
+        .floating-emoji:nth-child(3) { left: 25%; animation: float 12s linear infinite 4s; }
+        .floating-emoji:nth-child(4) { left: 35%; animation: float 20s linear infinite 1s; }
+        .floating-emoji:nth-child(5) { left: 45%; animation: float 16s linear infinite 3s; }
+        .floating-emoji:nth-child(6) { left: 55%; animation: float 14s linear infinite 5s; }
+        .floating-emoji:nth-child(7) { left: 65%; animation: float 17s linear infinite 2.5s; }
+        .floating-emoji:nth-child(8) { left: 75%; animation: float 19s linear infinite 4.5s; }
+        .floating-emoji:nth-child(9) { left: 85%; animation: float 13s linear infinite 1.5s; }
+        .floating-emoji:nth-child(10) { left: 95%; animation: float 21s linear infinite 3.5s; }
 
         @keyframes float {
-            0% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 0; 
-            }
-            10% { 
-                opacity: 0.7; 
-            }
-            80% { 
-                opacity: 0.7; 
-            }
-            100% { 
-                transform: translateY(calc(-100vh - 100px)) rotate(360deg); 
-                opacity: 0; 
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10%, 80% { opacity: 0.7; }
+            100% { transform: translateY(calc(-100vh - 100px)) rotate(360deg); opacity: 0; }
         }
 
+        /* 메인 콘텐츠 */
         .content {
             text-align: center;
             z-index: 10;
             animation: fadeIn 1s ease-out;
         }
 
+        .logo {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .email-icon {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 15;
+            background: rgba(54, 162, 235, 0.15);
+            border: 2px solid rgba(54, 162, 235, 0.4);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .email-icon:hover {
+            background: rgba(54, 162, 235, 0.25);
+            border-color: rgba(54, 162, 235, 0.6);
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 10px 30px rgba(54, 162, 235, 0.2);
+        }
+
         .logo h1 {
-            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
             font-size: 4rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
@@ -95,12 +116,19 @@
             opacity: 0.9;
             font-weight: 300;
             letter-spacing: 1px;
-            margin-bottom: 3rem;
         }
 
-        .github-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+        /* 버튼 스타일 */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(150, 150, 150, 0.15);
+            border: 2px solid rgba(150, 150, 150, 0.4);
             color: white;
             padding: 1rem 2.5rem;
             font-size: 1.1rem;
@@ -116,11 +144,22 @@
             letter-spacing: 0.5px;
         }
 
-        .github-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
+        .btn:hover {
+            background: rgba(150, 150, 150, 0.25);
+            border-color: rgba(150, 150, 150, 0.6);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(150, 150, 150, 0.2);
+        }
+
+        .surfing-btn {
+            background: rgba(54, 162, 235, 0.15);
+            border-color: rgba(54, 162, 235, 0.4);
+        }
+
+        .surfing-btn:hover {
+            background: rgba(54, 162, 235, 0.25);
+            border-color: rgba(54, 162, 235, 0.6);
+            box-shadow: 0 10px 30px rgba(54, 162, 235, 0.2);
         }
 
         .github-icon {
@@ -129,15 +168,107 @@
             fill: currentColor;
         }
 
+        .surf-emoji {
+            font-size: 1.5rem;
+        }
+
+        /* 이메일 팝업 */
+        .email-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-content {
+            background: rgba(54, 162, 235, 0.15);
+            border: 2px solid rgba(54, 162, 235, 0.4);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+            animation: popupFadeIn 0.3s ease-out;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .popup-close:hover {
+            transform: scale(1.1);
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .email-address {
+            font-size: 1.2rem;
+            color: #74b9ff;
+            font-weight: 600;
+            word-break: break-all;
+            padding: 1rem;
+            background: rgba(54, 162, 235, 0.2);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            user-select: text;
+            cursor: text;
+        }
+
+        .copy-btn {
+            background: rgba(116, 185, 255, 0.2);
+            border: 2px solid rgba(116, 185, 255, 0.4);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background: rgba(116, 185, 255, 0.3);
+            border-color: rgba(116, 185, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* 애니메이션 */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 반응형 */
         @media (max-width: 768px) {
             .logo h1 { font-size: 2.5rem; }
             .logo p { font-size: 1rem; }
-            .github-btn { padding: 0.8rem 2rem; font-size: 1rem; }
+            .btn { padding: 0.8rem 2rem; font-size: 1rem; }
+            .email-icon { 
+                top: -50px; 
+                font-size: 1.5rem; 
+                width: 50px; 
+                height: 50px; 
+            }
         }
     </style>
 </head>
@@ -157,16 +288,67 @@
 
     <div class="content">
         <div class="logo">
+            <div class="email-icon" onclick="openEmailPopup()">✉️</div>
             <h1>WaterIn Studio</h1>
             <p>Let's go surfing!</p>
         </div>
         
-        <a href="https://github.com/WaterIn-Official/" class="github-btn" target="_blank">
-            <svg class="github-icon" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-            GitHub으로 이동
-        </a>
+        <div class="button-container">
+            <a href="https://github.com" class="btn" target="_blank">
+                <svg class="github-icon" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub으로 이동
+            </a>
+            
+            <a href="https://github.com/WaterIn-Official/Surfing.Waves" class="btn surfing-btn" target="_blank">
+                <span class="surf-emoji">🏄</span>
+                Surfing Waves
+            </a>
+        </div>
     </div>
+
+    <div class="email-popup" id="emailPopup">
+        <div class="popup-content">
+            <div class="popup-close" onclick="closeEmailPopup()">✕</div>
+            <div class="popup-title">📧 - Email // 이메일</div>
+            <div class="email-address" id="emailAddress">waterin.studio@gmail.com</div>
+            <button class="copy-btn" onclick="copyEmail()">📋 Copy Email</button>
+        </div>
+    </div>
+
+    <script>
+        function openEmailPopup() {
+            document.getElementById('emailPopup').style.display = 'flex';
+        }
+
+        function closeEmailPopup() {
+            document.getElementById('emailPopup').style.display = 'none';
+        }
+
+        function copyEmail() {
+            const email = 'waterin.studio@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }).catch(() => {
+                const emailElement = document.getElementById('emailAddress');
+                emailElement.style.background = 'rgba(116, 185, 255, 0.3)';
+                setTimeout(() => {
+                    emailElement.style.background = 'rgba(54, 162, 235, 0.2)';
+                }, 1000);
+            });
+        }
+
+        document.getElementById('emailPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEmailPopup();
+            }
+        });
+    </script>
 </body>
 </html>
