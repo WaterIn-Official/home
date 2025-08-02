@@ -42,8 +42,9 @@
         .floating-emoji {
             position: absolute;
             font-size: 2rem;
-            opacity: 0.7;
+            opacity: 0;
             animation: float linear infinite;
+            bottom: -100px;
         }
 
         .floating-emoji:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
@@ -58,9 +59,20 @@
         .floating-emoji:nth-child(10) { left: 95%; animation-duration: 21s; animation-delay: 3.5s; }
 
         @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10%, 90% { opacity: 0.7; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.7; 
+            }
+            80% { 
+                opacity: 0.7; 
+            }
+            100% { 
+                transform: translateY(calc(-100vh - 100px)) rotate(360deg); 
+                opacity: 0; 
+            }
         }
 
         .content {
