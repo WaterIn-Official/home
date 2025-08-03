@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta name="google-site-verification" content="pOKUzI-rks8fdLbsaQ0j8lv9Q629tVWQIbUUCvGanQ0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WaterIn Studio</title>
@@ -21,43 +20,149 @@
             box-sizing: border-box;
         }
 
+        :root {
+            /* 일출 테마 (5-8시) */
+            --sunrise-primary: #ff9a9e;
+            --sunrise-secondary: #fecfef;
+            --sunrise-accent: #ffecd2;
+            
+            /* 낮 테마 (8-17시) */
+            --day-primary: #74b9ff;
+            --day-secondary: #0984e3;
+            --day-accent: #00b894;
+            
+            /* 일몰 테마 (17-20시) */
+            --sunset-primary: #fa709a;
+            --sunset-secondary: #fee140;
+            --sunset-accent: #ff6b6b;
+            
+            /* 밤 테마 (20-5시) */
+            --night-primary: #2d3561;
+            --night-secondary: #c05c7e;
+            --night-accent: #f093fb;
+        }
+
         body {
             font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #00b894 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 50%, var(--theme-accent) 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
+            position: relative;
+            transition: background 2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 파도 이모지 배경 */
-        .emoji-container {
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 로딩 스크린 */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #00b894 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 2s ease-out 1s forwards;
+        }
+
+        .loading-wave {
+            font-size: 4rem;
+            animation: waveLoad 1s ease-in-out infinite;
+        }
+
+        @keyframes waveLoad {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* 마우스 커서 효과 */
+        .cursor-particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: particleFade 1s ease-out forwards;
+        }
+
+        @keyframes particleFade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        /* 파도 및 파티클 배경 */
+        .background-container {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 1;
         }
 
-        .floating-emoji {
+        .floating-element {
             position: absolute;
-            font-size: 2rem;
             opacity: 0;
             animation: float linear infinite;
             bottom: -100px;
         }
 
-        .floating-emoji:nth-child(1) { left: 5%; animation: float 15s linear infinite 0s; }
-        .floating-emoji:nth-child(2) { left: 15%; animation: float 18s linear infinite 2s; }
-        .floating-emoji:nth-child(3) { left: 25%; animation: float 12s linear infinite 4s; }
-        .floating-emoji:nth-child(4) { left: 35%; animation: float 20s linear infinite 1s; }
-        .floating-emoji:nth-child(5) { left: 45%; animation: float 16s linear infinite 3s; }
-        .floating-emoji:nth-child(6) { left: 55%; animation: float 14s linear infinite 5s; }
-        .floating-emoji:nth-child(7) { left: 65%; animation: float 17s linear infinite 2.5s; }
-        .floating-emoji:nth-child(8) { left: 75%; animation: float 19s linear infinite 4.5s; }
-        .floating-emoji:nth-child(9) { left: 85%; animation: float 13s linear infinite 1.5s; }
-        .floating-emoji:nth-child(10) { left: 95%; animation: float 21s linear infinite 3.5s; }
+        .floating-emoji {
+            font-size: 2rem;
+        }
+
+        .floating-circle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .floating-bubble {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .floating-surfboard {
+            font-size: 1.8rem;
+            transform: rotate(45deg);
+        }
+
+        /* 각 요소별 위치와 타이밍 */
+        .floating-element:nth-child(1) { left: 5%; animation: float 15s linear infinite 0s; }
+        .floating-element:nth-child(2) { left: 15%; animation: float 18s linear infinite 2s; }
+        .floating-element:nth-child(3) { left: 25%; animation: float 12s linear infinite 4s; }
+        .floating-element:nth-child(4) { left: 35%; animation: float 20s linear infinite 1s; }
+        .floating-element:nth-child(5) { left: 45%; animation: float 16s linear infinite 3s; }
+        .floating-element:nth-child(6) { left: 55%; animation: float 14s linear infinite 5s; }
+        .floating-element:nth-child(7) { left: 65%; animation: float 17s linear infinite 2.5s; }
+        .floating-element:nth-child(8) { left: 75%; animation: float 19s linear infinite 4.5s; }
+        .floating-element:nth-child(9) { left: 85%; animation: float 13s linear infinite 1.5s; }
+        .floating-element:nth-child(10) { left: 95%; animation: float 21s linear infinite 3.5s; }
+        .floating-element:nth-child(11) { left: 8%; animation: float 22s linear infinite 1s; }
+        .floating-element:nth-child(12) { left: 18%; animation: float 16s linear infinite 3.5s; }
+        .floating-element:nth-child(13) { left: 32%; animation: float 19s linear infinite 0.5s; }
+        .floating-element:nth-child(14) { left: 48%; animation: float 14s linear infinite 2.8s; }
+        .floating-element:nth-child(15) { left: 62%; animation: float 17s linear infinite 4.2s; }
+        .floating-element:nth-child(16) { left: 72%; animation: float 20s linear infinite 1.7s; }
+        .floating-element:nth-child(17) { left: 88%; animation: float 15s linear infinite 3.2s; }
+        .floating-element:nth-child(18) { left: 12%; animation: float 18s linear infinite 5.1s; }
+        .floating-element:nth-child(19) { left: 28%; animation: float 24s linear infinite 6s; }
+        .floating-element:nth-child(20) { left: 42%; animation: float 11s linear infinite 2.2s; }
 
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
@@ -69,7 +174,15 @@
         .content {
             text-align: center;
             z-index: 10;
-            animation: fadeIn 1s ease-out;
+            animation: slideUp 1.5s ease-out 1.5s both;
+            transform: perspective(1000px);
+            transition: transform 0.1s ease;
+            padding: 20px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(100px) perspective(1000px); }
+            to { opacity: 1; transform: translateY(0) perspective(1000px); }
         }
 
         .logo {
@@ -77,31 +190,92 @@
             position: relative;
         }
 
-        .email-icon {
+        /* 아이콘 컨테이너 */
+        .icon-container {
             position: absolute;
-            top: -60px;
+            top: -70px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: flex;
+            gap: 1rem;
             z-index: 15;
-            background: rgba(54, 162, 235, 0.15);
-            border: 2px solid rgba(54, 162, 235, 0.4);
+        }
+
+        .icon-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             width: 60px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .email-icon:hover {
-            background: rgba(54, 162, 235, 0.25);
-            border-color: rgba(54, 162, 235, 0.6);
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 10px 30px rgba(54, 162, 235, 0.2);
+        .icon-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .icon-btn:hover::before, .icon-btn:active::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .icon-btn:hover, .icon-btn:active {
+            transform: translateY(-5px) rotateY(10deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .discord-icon {
+            background: rgba(88, 101, 242, 0.15);
+            border-color: rgba(88, 101, 242, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .discord-icon:hover, .discord-icon:active {
+            background: rgba(88, 101, 242, 0.25);
+            border-color: rgba(88, 101, 242, 0.6);
+            box-shadow: 0 15px 40px rgba(88, 101, 242, 0.3);
+        }
+
+        .youtube-icon {
+            background: rgba(255, 0, 0, 0.15);
+            border-color: rgba(255, 0, 0, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .youtube-icon:hover, .youtube-icon:active {
+            background: rgba(255, 0, 0, 0.25);
+            border-color: rgba(255, 0, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.3);
+        }
+
+        .discord-logo, .youtube-logo {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            position: relative;
+            z-index: 2;
         }
 
         .logo h1 {
@@ -110,46 +284,87 @@
             margin-bottom: 0.5rem;
             text-shadow: 0 4px 20px rgba(0,0,0,0.3);
             letter-spacing: 2px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.1); }
+            to { text-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.3); }
         }
 
         .logo p {
             font-size: 1.2rem;
-            opacity: 0.9;
+            opacity: 0;
             font-weight: 300;
             letter-spacing: 1px;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
+            margin: 0 auto;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 타이핑 커서 스타일 */
+        .typewriter-cursor {
+            display: inline-block;
+            background-color: white;
+            width: 2px;
+            animation: blink 1s infinite;
+            margin-left: 1px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         /* 버튼 스타일 */
         .button-container {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .btn {
-            background: rgba(150, 150, 150, 0.15);
-            border: 2px solid rgba(150, 150, 150, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem;
             font-size: 1.1rem;
             font-weight: 500;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 0.8rem;
-            backdrop-filter: blur(10px);
+            gap: 1rem;
+            backdrop-filter: blur(20px);
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn:hover {
-            background: rgba(150, 150, 150, 0.25);
-            border-color: rgba(150, 150, 150, 0.6);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(150, 150, 150, 0.2);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before, .btn:active::before {
+            left: 100%;
+        }
+
+        .btn:hover, .btn:active {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .surfing-btn {
@@ -157,10 +372,10 @@
             border-color: rgba(54, 162, 235, 0.4);
         }
 
-        .surfing-btn:hover {
+        .surfing-btn:hover, .surfing-btn:active {
             background: rgba(54, 162, 235, 0.25);
             border-color: rgba(54, 162, 235, 0.6);
-            box-shadow: 0 10px 30px rgba(54, 162, 235, 0.2);
+            box-shadow: 0 15px 40px rgba(54, 162, 235, 0.3);
         }
 
         .github-icon {
@@ -171,51 +386,75 @@
 
         .surf-emoji {
             font-size: 1.5rem;
+            animation: bounce 2s infinite;
         }
 
-        /* 이메일 팝업 */
-        .email-popup {
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        /* 팝업 스타일 */
+        .popup {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            padding: 20px;
         }
 
         .popup-content {
-            background: rgba(54, 162, 235, 0.15);
-            border: 2px solid rgba(54, 162, 235, 0.4);
-            border-radius: 20px;
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 2.5rem;
             text-align: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(25px);
             position: relative;
-            max-width: 400px;
-            width: 90%;
-            animation: popupFadeIn 0.3s ease-out;
+            max-width: 450px;
+            width: 100%;
+            animation: popupSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes popupSlideIn {
+            from { opacity: 0; transform: scale(0.8) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .popup-close {
             position: absolute;
-            top: 10px;
-            right: 15px;
+            top: 15px;
+            right: 20px;
             font-size: 1.5rem;
             cursor: pointer;
             color: white;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .popup-close:hover {
-            transform: scale(1.1);
+        .popup-close:hover, .popup-close:active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
         }
 
         .popup-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
             color: white;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
+            font-weight: 700;
         }
 
         .email-address {
@@ -223,104 +462,787 @@
             color: #74b9ff;
             font-weight: 600;
             word-break: break-all;
-            padding: 1rem;
-            background: rgba(54, 162, 235, 0.2);
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            padding: 1.2rem;
+            background: rgba(116, 185, 255, 0.1);
+            border: 1px solid rgba(116, 185, 255, 0.3);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
             user-select: text;
             cursor: text;
+            backdrop-filter: blur(10px);
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
         }
 
         .copy-btn {
-            background: rgba(116, 185, 255, 0.2);
+            background: rgba(116, 185, 255, 0.15);
             border: 2px solid rgba(116, 185, 255, 0.4);
             color: white;
-            padding: 0.5rem 1.5rem;
+            padding: 0.8rem 2rem;
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .copy-btn:hover {
-            background: rgba(116, 185, 255, 0.3);
+        .copy-btn:hover, .copy-btn:active {
+            background: rgba(116, 185, 255, 0.25);
             border-color: rgba(116, 185, 255, 0.6);
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(116, 185, 255, 0.2);
         }
 
-        /* 애니메이션 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 시간 설정 패널 */
+        .time-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 50;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
         }
 
-        @keyframes popupFadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        .time-toggle {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* 반응형 */
+        .time-toggle:hover, .time-toggle:active {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(25px);
+            display: none;
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 60;
+        }
+
+        .time-panel.active {
+            display: block;
+            animation: slideUpPanel 0.3s ease;
+        }
+
+        @keyframes slideUpPanel {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .time-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .time-option:hover, .time-option:active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .time-option label {
+            cursor: pointer;
+            color: white;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
+            font-weight: 600;
+            user-select: none;
+            flex: 1;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 커스텀 라디오 버튼 */
+        .time-option input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            background: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .time-option input[type="radio"]:checked {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .time-option input[type="radio"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: radioCheck 0.2s ease;
+        }
+
+        @keyframes radioCheck {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .time-option input[type="radio"]:hover, .time-option input[type="radio"]:active {
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 커스텀 슬라이더 */
+        .time-slider {
+            width: 100%;
+            margin: 1.5rem 0;
+            appearance: none;
+            -webkit-appearance: none;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .time-slider::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .time-slider::-webkit-slider-thumb:hover, .time-slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .time-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .time-slider:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .time-slider:disabled::-webkit-slider-thumb {
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .current-time {
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-family: 'Paperlogy-8ExtraBold', Arial, sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* 모바일 반응형 디자인 */
         @media (max-width: 768px) {
-            .logo h1 { font-size: 2.5rem; }
-            .logo p { font-size: 1rem; }
-            .btn { padding: 0.8rem 2rem; font-size: 1rem; }
-            .email-icon { 
-                top: -50px; 
-                font-size: 1.5rem; 
+            body {
+                min-height: 100vh;
+                height: auto;
+            }
+            
+            .logo h1 { 
+                font-size: 2.5rem; 
+            }
+            
+            .logo p { 
+                font-size: 1rem; 
+            }
+            
+            .btn { 
+                padding: 1rem 2rem; 
+                font-size: 1rem; 
+            }
+            
+            .icon-container { 
+                top: -60px; 
+                gap: 0.8rem;
+            }
+            
+            .icon-btn { 
+                font-size: 1.3rem; 
                 width: 50px; 
                 height: 50px; 
             }
+            
+            .time-control {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .time-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .time-panel {
+                position: fixed;
+                bottom: 80px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+                max-width: none;
+                width: calc(100vw - 20px);
+                padding: 1.5rem;
+                transform-origin: bottom right;
+            }
+            
+            .time-option {
+                margin-bottom: 1.2rem;
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .time-slider {
+                margin: 1.2rem 0;
+                height: 10px;
+            }
+            
+            .time-slider::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .current-time {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+            
+            .popup-content {
+                padding: 2rem;
+                margin: 10px;
+            }
+            
+            .floating-emoji {
+                font-size: 1.5rem;
+            }
+            
+            .floating-surfboard {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* 터치 디바이스 최적화 */
+        @media (pointer: coarse) {
+            .icon-btn, .btn, .copy-btn, .time-toggle {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .time-option {
+                min-height: 44px;
+                padding: 1rem 0.8rem;
+            }
+            
+            .time-option input[type="radio"] {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        /* 클릭 파장 효과 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to { transform: scale(4); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="emoji-container">
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
-        <div class="floating-emoji">🌊</div>
+    <!-- 로딩 스크린 -->
+    <div class="loading-screen">
+        <div class="loading-wave">🌊</div>
     </div>
 
+    <!-- 배경 요소들 -->
+    <div class="background-container">
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-emoji">🌊</div>
+        <div class="floating-element floating-circle">●</div>
+        <div class="floating-element floating-circle">●</div>
+        <div class="floating-element floating-circle">●</div>
+        <div class="floating-element floating-circle">●</div>
+        <div class="floating-element floating-bubble"></div>
+        <div class="floating-element floating-bubble"></div>
+        <div class="floating-element floating-bubble"></div>
+        <div class="floating-element floating-bubble"></div>
+        <div class="floating-element floating-surfboard">🏄</div>
+        <div class="floating-element floating-surfboard">🏄</div>
+        <div class="floating-element floating-emoji">🐚</div>
+        <div class="floating-element floating-emoji">⭐</div>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
     <div class="content">
         <div class="logo">
-            <div class="email-icon" onclick="openEmailPopup()">✉️</div>
+            <div class="icon-container">
+                <div class="icon-btn" onclick="openEmailPopup()" role="button" tabindex="0">✉️</div>
+                <a href="https://discord.gg/aafBMBu9BE" target="_blank" class="icon-btn discord-icon" role="button">
+                    <svg class="discord-logo" viewBox="0 -28.5 256 256" width="24" height="24" fill="currentColor">
+                        <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.580 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36zM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18z"/>
+                    </svg>
+                </a>
+                <a href="https://www.youtube.com/channel/UC0spcPe-BZNKeBKjlTsCKQg" target="_blank" class="icon-btn youtube-icon" role="button">
+                    <svg class="youtube-logo" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+            </div>
             <h1>WaterIn Studio</h1>
-            <p>Let's go surfing!</p>
+            <p id="typewriter">Let's go surfing!</p>
         </div>
         
         <div class="button-container">
-            <a href="https://github.com/WaterIn-Official" class="btn" target="_blank">
+            <a href="https://github.com" class="btn" target="_blank" role="button">
                 <svg class="github-icon" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 GitHub으로 이동
             </a>
             
-            <a href="https://github.com/WaterIn-Official/Surfing.Waves" class="btn surfing-btn" target="_blank">
+            <a href="https://github.com/WaterIn-Official/Surfing.Waves" class="btn surfing-btn" target="_blank" role="button">
                 <span class="surf-emoji">🏄</span>
                 Surfing Waves
             </a>
         </div>
     </div>
 
-    <div class="email-popup" id="emailPopup">
+    <!-- 이메일 팝업 -->
+    <div class="popup" id="emailPopup" role="dialog" aria-labelledby="popup-title" aria-modal="true">
         <div class="popup-content">
-            <div class="popup-close" onclick="closeEmailPopup()">✕</div>
-            <div class="popup-title">📧 - Email // 이메일</div>
+            <div class="popup-close" onclick="closeEmailPopup()" role="button" tabindex="0" aria-label="닫기">✕</div>
+            <div class="popup-title" id="popup-title">📧 - Email // 이메일</div>
             <div class="email-address" id="emailAddress">waterin.studio@gmail.com</div>
-            <button class="copy-btn" onclick="copyEmail()">📋 Copy Email</button>
+            <button class="copy-btn" onclick="copyEmail()" role="button">📋 Copy Email</button>
         </div>
     </div>
 
+    <!-- 시간 설정 컨트롤 -->
+    <div class="time-control">
+        <div class="time-panel" id="timePanel" role="dialog" aria-labelledby="time-panel-title">
+            <div class="time-option" onclick="selectTimeMode('auto')" role="button" tabindex="0">
+                <input type="radio" id="autoTime" name="timeMode" value="auto" checked aria-label="자동 시간 모드">
+                <label for="autoTime">자동 (현재 시간)</label>
+            </div>
+            <div class="time-option" onclick="selectTimeMode('manual')" role="button" tabindex="0">
+                <input type="radio" id="manualTime" name="timeMode" value="manual" aria-label="수동 시간 모드">
+                <label for="manualTime">수동 설정</label>
+            </div>
+            <input type="range" id="timeSlider" class="time-slider" min="0" max="23" value="12" disabled aria-label="시간 선택">
+            <div class="current-time" id="currentTime">12:00</div>
+        </div>
+        <div class="time-toggle" onclick="toggleTimePanel()" role="button" tabindex="0" aria-label="시간 설정 열기">🕐</div>
+    </div>
+
     <script>
+        // 시간대별 테마 설정
+        const themes = {
+            sunrise: { // 5-8시
+                primary: '#ff9a9e',
+                secondary: '#fecfef', 
+                accent: '#ffecd2'
+            },
+            day: { // 8-17시
+                primary: '#74b9ff',
+                secondary: '#0984e3',
+                accent: '#00b894'
+            },
+            sunset: { // 17-20시
+                primary: '#fa709a',
+                secondary: '#fee140',
+                accent: '#ff6b6b'
+            },
+            night: { // 20-5시
+                primary: '#2d3561',
+                secondary: '#c05c7e',
+                accent: '#f093fb'
+            }
+        };
+
+        let isAutoTime = true;
+        let currentHour = new Date().getHours();
+        let timePanelOpen = false;
+
+        // 색상 보간 함수
+        function interpolateColor(color1, color2, factor) {
+            const c1 = hexToRgb(color1);
+            const c2 = hexToRgb(color2);
+            
+            const r = Math.round(c1.r + (c2.r - c1.r) * factor);
+            const g = Math.round(c1.g + (c2.g - c1.g) * factor);
+            const b = Math.round(c1.b + (c2.b - c1.b) * factor);
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // 부드러운 테마 전환 함수
+        function applyTheme(hour, minutes = 0) {
+            const timeValue = hour + minutes / 60;
+            let theme1, theme2, factor = 0;
+
+            if (timeValue >= 5 && timeValue < 8) {
+                // 일출 시간 (5-8시)
+                theme1 = themes.night;
+                theme2 = themes.sunrise;
+                factor = (timeValue - 5) / 3;
+            } else if (timeValue >= 8 && timeValue < 17) {
+                // 낮 시간 (8-17시)
+                if (timeValue < 9) {
+                    theme1 = themes.sunrise;
+                    theme2 = themes.day;
+                    factor = (timeValue - 8) / 1;
+                } else {
+                    theme1 = theme2 = themes.day;
+                }
+            } else if (timeValue >= 17 && timeValue < 20) {
+                // 일몰 시간 (17-20시)
+                theme1 = themes.day;
+                theme2 = themes.sunset;
+                factor = (timeValue - 17) / 3;
+            } else {
+                // 밤 시간 (20-5시)
+                if (timeValue >= 20 && timeValue < 22) {
+                    theme1 = themes.sunset;
+                    theme2 = themes.night;
+                    factor = (timeValue - 20) / 2;
+                } else {
+                    theme1 = theme2 = themes.night;
+                }
+            }
+
+            // 색상 보간
+            const primary = factor > 0 ? interpolateColor(theme1.primary, theme2.primary, factor) : theme1.primary;
+            const secondary = factor > 0 ? interpolateColor(theme1.secondary, theme2.secondary, factor) : theme1.secondary;
+            const accent = factor > 0 ? interpolateColor(theme1.accent, theme2.accent, factor) : theme1.accent;
+
+            document.documentElement.style.setProperty('--theme-primary', primary);
+            document.documentElement.style.setProperty('--theme-secondary', secondary);
+            document.documentElement.style.setProperty('--theme-accent', accent);
+        }
+
+        // 한글자씩 타이핑 애니메이션
+        function startTypewriter() {
+            const text = "Let's go surfing!";
+            const element = document.getElementById('typewriter');
+            let i = 0;
+
+            element.innerHTML = '';
+            element.style.opacity = '1';
+
+            function typeChar() {
+                if (i < text.length) {
+                    element.innerHTML = text.substring(0, i + 1) + '<span class="typewriter-cursor"></span>';
+                    i++;
+                    setTimeout(typeChar, 150);
+                } else {
+                    // 타이핑 완료 후 3초간 커서 깜빡임, 그 후 커서 제거
+                    setTimeout(() => {
+                        element.innerHTML = text;
+                    }, 3000);
+                }
+            }
+
+            setTimeout(typeChar, 2500);
+        }
+
+        // 시간 패널 토글 (모바일 최적화)
+        function toggleTimePanel() {
+            const panel = document.getElementById('timePanel');
+            timePanelOpen = !timePanelOpen;
+            
+            if (timePanelOpen) {
+                panel.classList.add('active');
+                // 모바일에서 접근성을 위해 포커스 설정
+                setTimeout(() => {
+                    const firstRadio = panel.querySelector('input[type="radio"]:checked');
+                    if (firstRadio) {
+                        firstRadio.focus();
+                    }
+                }, 100);
+            } else {
+                panel.classList.remove('active');
+            }
+        }
+
+        // 시간 모드 선택 함수 (터치 최적화)
+        function selectTimeMode(mode) {
+            const autoRadio = document.getElementById('autoTime');
+            const manualRadio = document.getElementById('manualTime');
+            const timeSlider = document.getElementById('timeSlider');
+            const currentTimeDisplay = document.getElementById('currentTime');
+
+            if (mode === 'auto') {
+                autoRadio.checked = true;
+                manualRadio.checked = false;
+                isAutoTime = true;
+                timeSlider.disabled = true;
+                const now = new Date();
+                currentHour = now.getHours();
+                timeSlider.value = currentHour;
+                updateTimeDisplay(currentHour, now.getMinutes());
+                applyTheme(currentHour, now.getMinutes());
+            } else if (mode === 'manual') {
+                autoRadio.checked = false;
+                manualRadio.checked = true;
+                isAutoTime = false;
+                timeSlider.disabled = false;
+            }
+        }
+
+        // 시간 모드 변경
+        document.addEventListener('DOMContentLoaded', function() {
+            const autoRadio = document.getElementById('autoTime');
+            const manualRadio = document.getElementById('manualTime');
+            const timeSlider = document.getElementById('timeSlider');
+            const currentTimeDisplay = document.getElementById('currentTime');
+
+            // 초기 테마 적용
+            applyTheme(currentHour);
+            timeSlider.value = currentHour;
+            updateTimeDisplay(currentHour);
+
+            // 타이핑 애니메이션 시작
+            startTypewriter();
+
+            // 라디오 버튼 변경 이벤트 (터치 및 클릭 모두 지원)
+            autoRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    selectTimeMode('auto');
+                }
+            });
+
+            manualRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    selectTimeMode('manual');
+                }
+            });
+
+            // 슬라이더 변경 이벤트 (부드러운 전환)
+            timeSlider.addEventListener('input', function() {
+                if (!isAutoTime) {
+                    currentHour = parseInt(this.value);
+                    updateTimeDisplay(currentHour);
+                    applyTheme(currentHour);
+                }
+            });
+
+            // 터치 이벤트 지원 추가
+            timeSlider.addEventListener('touchmove', function(e) {
+                e.preventDefault(); // 스크롤 방지
+                if (!isAutoTime) {
+                    currentHour = parseInt(this.value);
+                    updateTimeDisplay(currentHour);
+                    applyTheme(currentHour);
+                }
+            });
+
+            // 자동 시간 업데이트 (1분마다, 분 단위까지 고려)
+            setInterval(function() {
+                if (isAutoTime) {
+                    const now = new Date();
+                    const newHour = now.getHours();
+                    const minutes = now.getMinutes();
+                    
+                    if (newHour !== currentHour || minutes % 5 === 0) {
+                        currentHour = newHour;
+                        timeSlider.value = currentHour;
+                        updateTimeDisplay(currentHour, minutes);
+                        applyTheme(currentHour, minutes);
+                    }
+                }
+            }, 60000);
+
+            // 키보드 접근성 지원
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && timePanelOpen) {
+                    toggleTimePanel();
+                }
+            });
+
+            // 터치 이벤트 추가 (모바일 최적화)
+            const timeToggle = document.querySelector('.time-toggle');
+            timeToggle.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            });
+            
+            timeToggle.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                toggleTimePanel();
+            });
+
+            // 시간 옵션 터치 이벤트
+            const timeOptions = document.querySelectorAll('.time-option');
+            timeOptions.forEach((option, index) => {
+                option.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    const mode = index === 0 ? 'auto' : 'manual';
+                    selectTimeMode(mode);
+                });
+            });
+        });
+
+        function updateTimeDisplay(hour, minutes = 0) {
+            const timeString = hour.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // 마우스 커서 파티클 효과 (데스크톱만)
+        if (!('ontouchstart' in window)) {
+            document.addEventListener('mousemove', function(e) {
+                if (Math.random() > 0.7) {
+                    createCursorParticle(e.clientX, e.clientY);
+                }
+            });
+        }
+
+        function createCursorParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'cursor-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+
+        // 패럴랙스 효과 (데스크톱만)
+        if (!('ontouchstart' in window)) {
+            document.addEventListener('mousemove', function(e) {
+                const content = document.querySelector('.content');
+                const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                
+                content.style.transform = `perspective(1000px) rotateY(${x * 0.1}deg) rotateX(${-y * 0.1}deg)`;
+            });
+        }
+
+        // 클릭 파장 효과
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // 모든 버튼에 클릭 효과 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn, .icon-btn, .copy-btn');
+            buttons.forEach(button => {
+                // 클릭 이벤트
+                button.addEventListener('click', createRipple);
+                // 터치 이벤트 (모바일)
+                button.addEventListener('touchstart', function(e) {
+                    this.classList.add('touch-active');
+                });
+                button.addEventListener('touchend', function(e) {
+                    this.classList.remove('touch-active');
+                });
+            });
+        });
+
+        // 이메일 팝업 관련 함수들
         function openEmailPopup() {
             document.getElementById('emailPopup').style.display = 'flex';
+            // 접근성을 위해 포커스 설정
+            setTimeout(() => {
+                document.querySelector('.copy-btn').focus();
+            }, 100);
         }
 
         function closeEmailPopup() {
@@ -337,19 +1259,84 @@
                     btn.innerHTML = originalText;
                 }, 2000);
             }).catch(() => {
+                // 복사 실패시 이메일 주소 강조
                 const emailElement = document.getElementById('emailAddress');
                 emailElement.style.background = 'rgba(116, 185, 255, 0.3)';
                 setTimeout(() => {
-                    emailElement.style.background = 'rgba(54, 162, 235, 0.2)';
+                    emailElement.style.background = 'rgba(116, 185, 255, 0.1)';
                 }, 1000);
+                
+                // 모바일에서 텍스트 선택 활성화
+                if (window.getSelection) {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(emailElement);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
             });
         }
 
+        // 팝업 외부 클릭시 닫기
         document.getElementById('emailPopup').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeEmailPopup();
             }
         });
+
+        // 시간 패널 외부 클릭/터치시 닫기 (개선된 버전)
+        document.addEventListener('click', function(e) {
+            const timeControl = document.querySelector('.time-control');
+            
+            if (!timeControl.contains(e.target) && timePanelOpen) {
+                toggleTimePanel();
+            }
+        });
+
+        // 터치 이벤트도 동일하게 처리
+        document.addEventListener('touchend', function(e) {
+            const timeControl = document.querySelector('.time-control');
+            
+            if (!timeControl.contains(e.target) && timePanelOpen) {
+                toggleTimePanel();
+            }
+        });
+
+        // 모바일 터치 최적화
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchstart', function() {}, true);
+            
+            // 터치 디바이스에서 hover 효과 제거
+            const style = document.createElement('style');
+            style.textContent = `
+                @media (hover: none) and (pointer: coarse) {
+                    .icon-btn:hover,
+                    .btn:hover,
+                    .copy-btn:hover,
+                    .time-toggle:hover,
+                    .time-option:hover {
+                        transform: none;
+                        box-shadow: initial;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // 성능 최적화: 애니메이션 감소 설정 확인
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+        }
+
+        // 뷰포트 높이 문제 해결 (모바일 브라우저)
+        function setViewportHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
     </script>
 </body>
 </html>
